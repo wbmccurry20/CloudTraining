@@ -7,13 +7,12 @@ terraform {
     }
   }
   cloud {
-    organization = "cloud_learning"
+    organization = "dw_cloud"
     workspaces {
       name = "terraform_azure"
-    }
+   }
   }
-  required_version = ">= 1.1.0"
-}
+ }
 
 provider "azurerm" {
   features {}
