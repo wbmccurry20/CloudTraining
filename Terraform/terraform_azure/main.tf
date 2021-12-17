@@ -6,14 +6,13 @@ terraform {
       version = "~> 2.65"
     }
   }
-cloud {
-  organization = "cloud_learning"
-  workspaces {
-    name = "terraform_azure"
+  cloud {
+    organization = "dw_cloud"
+    workspaces {
+      name = "terraform_azure"
+   }
   }
-}
-  required_version = ">= 1.1.0"
-}
+ }
 
 provider "azurerm" {
   features {}
