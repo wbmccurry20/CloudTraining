@@ -6,7 +6,12 @@ terraform {
       version = "~> 2.65"
     }
   }
-
+cloud {
+  organization = "cloud_learning"
+  workspaces {
+    name = "tf_azure"
+  }
+}
   required_version = ">= 1.1.0"
 }
 
