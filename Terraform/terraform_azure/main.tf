@@ -9,7 +9,7 @@ terraform {
 cloud {
   organization = "cloud_learning"
   workspaces {
-    name = "tf_azure"
+    name = "terraform_azure"
   }
 }
   required_version = ">= 1.1.0"
