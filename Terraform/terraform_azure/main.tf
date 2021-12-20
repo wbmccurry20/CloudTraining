@@ -139,7 +139,6 @@ output "tls_private_key" {
 
 # Create VM
 resource "azurerm_linux_virtual_machine" "terraformVM" {
-  admin_username        = "azureuser"
   location              = "eastus2"
   name                  = "tf_azure_vm"
   network_interface_ids = [azurerm_network_interface.terraformnic.id]
