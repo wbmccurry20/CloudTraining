@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "rg" {
   location = "eastus2"
   
   tags = {
-    Environment = "Getting Started with Terraform"
+    Environment = "tf_azure"
     Team = "DevOps"
   }
 }
