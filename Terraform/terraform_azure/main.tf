@@ -99,10 +99,17 @@ resource "azurerm_network_interface" "terraformnic" {
   }
 }
 
+# create security group
+resource "azurerm_application_security_group" "app_securitygroup" {
+  name                = "tf_azure_sg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 # Connect security group to network interface
 resource "azurerm_network_interface_application_security_group_association" "terraformExample" {
     network_interface_id          = azurerm_network_interface.terraformnic.id
-    application_security_group_id = azurerm_network_security_group.terraformnsg.id
+    application_security_group_id = azurerm_application_security_group.app_securitygroup.id
 }
 
 # Genrate random text for unique storage account name
