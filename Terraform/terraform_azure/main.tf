@@ -20,7 +20,7 @@ provider "azurerm" {
 
 # resource group
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
+  name     = "tf_azure_rg"
   location = "eastus2"
   
   tags = {
