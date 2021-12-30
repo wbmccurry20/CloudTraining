@@ -40,7 +40,7 @@ resource "azurerm_virtual_network" "vnet" {
 # subnet
 resource "azurerm_subnet" "terraformSubnet" {
   name                 = "tf_subnet"
-  resource_group_name  = "azurerm_resource_group.rg.name"
+  resource_group_name  = azurerm_resource_group.rg.name
   # needs to be a variable
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes      = ["10.0.1.0/24"]
