@@ -29,7 +29,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_storage_account" "DW_storage" {
-  name                     = "dwstorage"
+  name                     = "dwstorage_tfe"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = "eastus2"
   account_tier             = "Standard"
