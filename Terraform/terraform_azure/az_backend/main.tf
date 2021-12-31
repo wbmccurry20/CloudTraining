@@ -19,7 +19,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
+  name     = TF_VAR_resource_group_name
   location = "eastus2"
 
   tags = {
