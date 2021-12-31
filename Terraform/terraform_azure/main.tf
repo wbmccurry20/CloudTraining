@@ -20,7 +20,7 @@ provider "azurerm" {
 
 # resource group
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
+  name     = "tf_azure_rg"
   location = "eastus2"
   
   tags = {
@@ -40,7 +40,7 @@ resource "azurerm_virtual_network" "vnet" {
 # subnet
 resource "azurerm_subnet" "terraformSubnet" {
   name                 = "tf_subnet"
-  resource_group_name  = "azurerm_resource_group.rg.name"
+  resource_group_name  = azurerm_resource_group.rg.name
   # needs to be a variable
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes      = ["10.0.1.0/24"]
@@ -99,10 +99,17 @@ resource "azurerm_network_interface" "terraformnic" {
   }
 }
 
+# create security group
+resource "azurerm_application_security_group" "app_securitygroup" {
+  name                = "tf_azure_sg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 # Connect security group to network interface
 resource "azurerm_network_interface_application_security_group_association" "terraformExample" {
     network_interface_id          = azurerm_network_interface.terraformnic.id
-    application_security_group_id = azurerm_network_security_group.terraformnsg.id
+    application_security_group_id = azurerm_application_security_group.app_securitygroup.id
 }
 
 # Genrate random text for unique storage account name
