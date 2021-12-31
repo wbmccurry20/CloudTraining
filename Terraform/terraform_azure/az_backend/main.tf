@@ -28,8 +28,17 @@ resource "azurerm_resource_group" "rg" {
   }
 }
 
+# Genrate random text for unique storage account name
+resource "random_id" "randomId" {
+  keepers = {
+    # generates a new ID only when resource group is defined
+    resource_group = azurerm_resource_group.rg.name
+  }
+  byte_length = 8
+}
+
 resource "azurerm_storage_account" "DW_storage" {
-  name                     = "dwstorage_tfe"
+  name                     = "diag${random_id.randomId.hex}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = "eastus2"
   account_tier             = "Standard"
