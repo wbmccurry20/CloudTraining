@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.65"
+      version = "~> 2.88.0"
     }
   }
   cloud {
@@ -43,6 +43,7 @@ resource "azurerm_storage_account" "DW_storage" {
   location                 = "eastus2"
   account_tier             = "Standard"
   account_replication_type = "GRS"
+  allow_blob_public_access = true
 }
 
 resource "azurerm_storage_container" "example" {
