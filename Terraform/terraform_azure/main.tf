@@ -3,44 +3,56 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.65"
+      version = "~> 2.90.0"
     }
   }
-  cloud {
-    organization = "dw_cloud"
-    workspaces {
-      name = "terraform_azure"
-   }
+  backend "azurerm" {
+    resource_group_name  = module.az_backend.resource_group_name
+    storage_account_name = module.az_backend.storage_account_name
+    container_name       = module.az_backend.container_name
+    key                  = "terraform.tfstate"
   }
+  # SWITCH TO REMOTE BACKEND
+  # cloud {
+  #   organization = "dw_cloud"
+  #   workspaces {
+  #     name = "terraform_azure"
+  #  }
+  # }
  }
 
 provider "azurerm" {
   features {}
 }
 
-# resource group
-resource "azurerm_resource_group" "rg" {
-  name     = "tf_azure_rg"
-  location = "eastus2"
-  
-  tags = {
-    Environment = "tf_azure"
-    Team = "DevOps"
-  }
+#INSTANTIATE CHILD MODULE
+module "az_backend" {
+  source = "./az_backend"
 }
+
+# REMOVING TO PASS FROM CHILD MODULE
+# resource "azurerm_resource_group" "rg" {
+#   name     = "tf_azure_rg"
+#   location = "eastus2"
+  
+#   tags = {
+#     Environment = "tf_azure"
+#     Team = "DevOps"
+#   }
+# }
 
 # virtual network
 resource "azurerm_virtual_network" "vnet" {
   name                = "myTFVnet"
   address_space       = ["10.0.0.0/16"]
   location            = "eastus2"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = module.az_backend.resource_group_name
 }
 
 # subnet
 resource "azurerm_subnet" "terraformSubnet" {
   name                 = "tf_subnet"
-  resource_group_name  = azurerm_resource_group.rg.name
+  resource_group_name  = module.az_backend.resource_group_name
   # needs to be a variable
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes      = ["10.0.1.0/24"]
@@ -52,7 +64,7 @@ resource "azurerm_public_ip" "terraformpublicip" {
   allocation_method   = "Dynamic"
   location            = "eastus2"
   name                = "tf_publicIP"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = module.az_backend.resource_group_name
 
   tags = {
     environment = "tf_azure"
@@ -63,7 +75,7 @@ resource "azurerm_public_ip" "terraformpublicip" {
 resource "azurerm_network_security_group" "terraformnsg" {
   location            = "eastus2"
   name                = "tfnsg"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = module.az_backend.resource_group_name
 
   security_rule {
     access    = "Allow"
@@ -86,7 +98,7 @@ resource "azurerm_network_security_group" "terraformnsg" {
 resource "azurerm_network_interface" "terraformnic" {
   location            = "eastus2"
   name                = "tfnic"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = module.az_backend.resource_group_name
   ip_configuration {
     name                          = "tfnicConfig"
     subnet_id                     = azurerm_subnet.terraformSubnet.id
@@ -103,7 +115,7 @@ resource "azurerm_network_interface" "terraformnic" {
 resource "azurerm_application_security_group" "app_securitygroup" {
   name                = "tf_azure_sg"
   location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = module.az_backend.resource_group_name
 }
 
 # Connect security group to network interface
@@ -121,18 +133,18 @@ resource "random_id" "randomId" {
   byte_length = 8
 }
 
-# Create storage account for boot diagnostics
-resource "azurerm_storage_account" "terraformStorageAcct" {
-  account_replication_type = "LRS"
-  account_tier             = "Standard"
-  location                 = "eastus2"
-  name                     = "diag${random_id.randomId.hex}"
-  resource_group_name      = azurerm_resource_group.rg.name
+# REMOVING TO PASS FROM CHILD MODULE
+# resource "azurerm_storage_account" "terraformStorageAcct" {
+#   account_replication_type = "LRS"
+#   account_tier             = "Standard"
+#   location                 = "eastus2"
+#   name                     = "diag${random_id.randomId.hex}"
+#   resource_group_name      = module.az_backend.resource_group_name
 
-  tags = {
-    environment = "tf_azure"
-  }
-}
+#   tags = {
+#     environment = "tf_azure"
+#   }
+# }
 
 # Create (and display) an SSH key
 resource "tls_private_key" "terraform_ssh" {
@@ -149,7 +161,7 @@ resource "azurerm_linux_virtual_machine" "terraformVM" {
   location              = "eastus2"
   name                  = "tf_azure_vm"
   network_interface_ids = [azurerm_network_interface.terraformnic.id]
-  resource_group_name   = azurerm_resource_group.rg.name
+  resource_group_name   = module.az_backend.resource_group_name
   size                  = "Standard_DS1_v2"
 
   os_disk {
@@ -175,7 +187,7 @@ resource "azurerm_linux_virtual_machine" "terraformVM" {
   }
 
   boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.terraformStorageAcct.primary_blob_endpoint
+    storage_account_uri = module.az_backend.storage_account_uri
   }
 
   tags = {
