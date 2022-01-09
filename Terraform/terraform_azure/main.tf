@@ -114,7 +114,7 @@ resource "azurerm_network_interface" "terraformnic" {
 # create security group
 resource "azurerm_application_security_group" "app_securitygroup" {
   name                = "tf_azure_sg"
-  location            = azurerm_resource_group.rg.location
+  location            = module.az_backend.resource_group_location
   resource_group_name = module.az_backend.resource_group_name
 }
 
@@ -128,7 +128,7 @@ resource "azurerm_network_interface_application_security_group_association" "ter
 resource "random_id" "randomId" {
   keepers = {
     # generates a new ID only when resource group is defined
-    resource_group = azurerm_resource_group.rg.name
+    resource_group = module.az_backend.resource_group_name
   }
   byte_length = 8
 }
