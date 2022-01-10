@@ -12,13 +12,6 @@ terraform {
     container_name       = module.az_backend.container_name
     key                  = "terraform.tfstate"
   }
-  # SWITCH TO REMOTE BACKEND
-  # cloud {
-  #   organization = "dw_cloud"
-  #   workspaces {
-  #     name = "terraform_azure"
-  #  }
-  # }
  }
 
 provider "azurerm" {
@@ -29,17 +22,6 @@ provider "azurerm" {
 module "az_backend" {
   source = "./az_backend"
 }
-
-# REMOVING TO PASS FROM CHILD MODULE
-# resource "azurerm_resource_group" "rg" {
-#   name     = "tf_azure_rg"
-#   location = "eastus2"
-  
-#   tags = {
-#     Environment = "tf_azure"
-#     Team = "DevOps"
-#   }
-# }
 
 # virtual network
 resource "azurerm_virtual_network" "vnet" {
@@ -56,7 +38,6 @@ resource "azurerm_subnet" "terraformSubnet" {
   # needs to be a variable
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes      = ["10.0.1.0/24"]
-
 }
 
 # public IPs
@@ -132,19 +113,6 @@ resource "random_id" "randomId" {
   }
   byte_length = 8
 }
-
-# REMOVING TO PASS FROM CHILD MODULE
-# resource "azurerm_storage_account" "terraformStorageAcct" {
-#   account_replication_type = "LRS"
-#   account_tier             = "Standard"
-#   location                 = "eastus2"
-#   name                     = "diag${random_id.randomId.hex}"
-#   resource_group_name      = module.az_backend.resource_group_name
-
-#   tags = {
-#     environment = "tf_azure"
-#   }
-# }
 
 # Create (and display) an SSH key
 resource "tls_private_key" "terraform_ssh" {
