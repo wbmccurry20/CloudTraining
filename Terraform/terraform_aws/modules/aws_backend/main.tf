@@ -3,5 +3,5 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "backend-bucket" {
-  bucket = "backend-bucket"
+  bucket = "dw-backend-bucket"
 }
