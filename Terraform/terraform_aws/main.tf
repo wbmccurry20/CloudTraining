@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "aws_backend" {
-  source = "~/modules/aws_backend"
+  source = "./modules/aws_backend"
 }
 
 data "aws_ami" "ubuntu" {
