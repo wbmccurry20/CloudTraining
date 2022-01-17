@@ -13,11 +13,7 @@ terraform {
   backend "s3" {
     bucket = module.aws_backend.bucket
     region = var.region
-    key = var.AWS_ACCESS_KEY
+    #key = var.AWS_ACCESS_KEY
   }
   required_version = ">= 0.14.0"
-  backend "s3" {
-    bucket = module.aws_backend.bucket
-    region = var.region
-  }
 }
