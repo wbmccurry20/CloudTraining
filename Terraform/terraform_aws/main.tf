@@ -2,6 +2,10 @@ provider "aws" {
   region = var.region
 }
 
+module "aws_backend" {
+  source = "~/modules/aws_backend"
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
