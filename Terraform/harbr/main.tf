@@ -32,7 +32,7 @@ data "aws_ami" "ubuntu_prod" {
     values = ["hvm"]
   }
 
-  owners = ["self"]
+  owners = ["099720109477"]
 }
 
 data "aws_ami" "ubuntu_np" {
@@ -49,7 +49,7 @@ data "aws_ami" "ubuntu_np" {
     values = ["hvm"]
   }
 
-  owners = ["self"]
+  owners = ["099720109477"]
 }
 
 resource "aws_instance" "ubuntu_prod" {
