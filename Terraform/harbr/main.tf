@@ -40,7 +40,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "ubuntu" {
+resource "aws_instance" "ubuntu_prod" {
   provider = "prod"
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
@@ -50,7 +50,7 @@ resource "aws_instance" "ubuntu" {
   }
 }
 
-resource "aws_instance" "ubuntu" {
+resource "aws_instance" "ubuntu_np" {
   provider = "nonprod"
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
