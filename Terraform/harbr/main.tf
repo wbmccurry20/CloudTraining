@@ -35,7 +35,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ubuntu_prod" {
-  provider = "prod"
+  provider = aws.prod
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
@@ -45,7 +45,7 @@ resource "aws_instance" "ubuntu_prod" {
 }
 
 resource "aws_instance" "ubuntu_np" {
-  provider = "nonprod"
+  provider = aws.nonprod
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
