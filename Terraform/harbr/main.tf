@@ -18,7 +18,7 @@ provider "aws" {
   region = "us-west-1"
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "ubuntu_prod" {
   provider = aws.prod
   most_recent = true
 
@@ -35,7 +35,7 @@ data "aws_ami" "ubuntu" {
   owners = ["self"]
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "ubuntu_np" {
   provider = aws.nonprod
   most_recent = true
 
@@ -54,7 +54,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "ubuntu_prod" {
   provider = aws.prod
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ubuntu_prod.id
   instance_type = var.instance_type
 
   tags = {
@@ -64,7 +64,7 @@ resource "aws_instance" "ubuntu_prod" {
 
 resource "aws_instance" "ubuntu_np" {
   provider = aws.nonprod
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ubuntu_np.id
   instance_type = var.instance_type
 
   tags = {
