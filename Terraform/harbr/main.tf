@@ -40,7 +40,7 @@ resource "aws_instance" "ubuntu_prod" {
   instance_type = var.instance_type
 
   tags = {
-    Name = var.instance_name
+    Name = var.instance_name["PROD"]
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_instance" "ubuntu_np" {
   instance_type = var.instance_type
 
   tags = {
-    Name = var.instance_name
+    Name = var.instance_name["NONPROD"]
   }
 }
 
