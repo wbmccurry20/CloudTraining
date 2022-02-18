@@ -10,12 +10,12 @@ terraform {
 
 provider "aws" {
   alias = "prod"
-  region = us-east-1
+  region = "us-east-1"
 }
 
 provider "aws" {
   alias = "nonprod"
-  region = us-west-1
+  region = "us-west-1"
 }
 
 data "aws_ami" "ubuntu" {
