@@ -9,5 +9,6 @@ variable "instance_name" {
   default     = {
 	"PROD" = "PROD"
 	"NONPROD" = "NONPROD"
-}
+  }
+ }
 
