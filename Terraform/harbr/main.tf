@@ -34,7 +34,7 @@ data "aws_ami" "ubuntu_prod" {
 
   owners = ["099720109477"]
 }
-
+#NEW TEST
 data "aws_ami" "ubuntu_np" {
   provider = aws.nonprod
   most_recent = true
