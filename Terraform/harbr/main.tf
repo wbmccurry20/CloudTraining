@@ -19,6 +19,7 @@ provider "aws" {
 }
 
 data "aws_ami" "ubuntu" {
+  provider = aws.prod
   most_recent = true
 
   filter {
