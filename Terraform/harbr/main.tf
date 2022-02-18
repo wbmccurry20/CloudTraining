@@ -6,12 +6,6 @@ terraform {
       version = "~> 3.0"
     }
   }
-  cloud {
-    organization = "dw_cloud"
-    workspaces {
-      name = "harbr_takehome"
-   }
-  }
  }
 
 provider "aws" {
