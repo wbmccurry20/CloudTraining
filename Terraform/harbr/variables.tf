@@ -4,7 +4,7 @@ variable "instance_type" {
 }
 
 variable "instance_name" {
-  type = "map"
+  type = map(string)
   description = "EC2 instance name"
   default     = {
 	"PROD" = "PROD"
