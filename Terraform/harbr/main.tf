@@ -15,12 +15,12 @@ terraform {
  }
 
 provider "aws" {
-  alias = "PROD"
+  alias = "prod"
   region = us-east-1
 }
 
 provider "aws" {
-  alias = "NONPROD"
+  alias = "nonprod"
   region = us-west-1
 }
 
